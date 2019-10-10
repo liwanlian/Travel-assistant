@@ -778,7 +778,7 @@ Toast.makeText(getActivity().getApplicationContext(),"尚未安卓百度app",Toa
                     String r1=sb.toString();
                     new AlertDialog.Builder(getActivity())
                             .setTitle("从"+startcity+"的"+startplace+"到"+endcity+"的"+endplace)
-                            .setMessage("系统已经为你选出一条价格低，时间短的线路，如下"+"\n"+r1)
+                            .setMessage("系统已经为你选出一条价格最低的线路，如下"+"\n"+r1)
                             .setPositiveButton("确定", null).show();
                 } else {
                     // 跨城

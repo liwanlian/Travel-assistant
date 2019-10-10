@@ -1,11 +1,14 @@
 package com.example.location;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.example.location.Adapter.Adapter_myview;
+import com.example.location.Configure.exitsystem;
 import com.example.location.MyFragment.Fragment_address;
 import com.example.location.MyFragment.Fragment_guide;
 import com.example.location.MyFragment.Fragment_home;
@@ -25,7 +29,7 @@ import com.example.location.MyFragment.Fragment_BuSu;
 
 import java.util.List;
 
-public abstract class GuideActivity extends AppCompatActivity implements View.OnClickListener ,ViewPager.OnPageChangeListener{
+public abstract class GuideActivity extends exitsystem implements View.OnClickListener ,ViewPager.OnPageChangeListener{
     //底部菜单栏的四个布局
     protected LinearLayout ll_home;
     protected LinearLayout ll_address;
@@ -59,7 +63,7 @@ public abstract class GuideActivity extends AppCompatActivity implements View.On
    // protected BaiduMap baiduMap;
     protected TextView tv_location;
 
-
+    private long exitTime=0;
     //这里加final是为了不让子类覆盖，原因是为了预防这里的一些类还没初始化的时候就被子类调用
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
@@ -270,5 +274,25 @@ public abstract class GuideActivity extends AppCompatActivity implements View.On
             transaction.hide(fragment_buSu);
         }
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
 
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setAction(exitsystem.SYSTEM_EXIT);
+            sendBroadcast(intent);
+        }
+    }
 }
